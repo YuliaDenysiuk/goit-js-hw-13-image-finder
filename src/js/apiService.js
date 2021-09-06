@@ -6,17 +6,11 @@ export default {
     page: 1,
 
     fetchImage() {
-        // return fetch(`${BASE_URL}?key=${API_KEY}&image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12`)
-        //     .then(response => response.json())
-        //     .then(({ images }) => {
-        //         this.incrementPage();
-        //         return images;
-        //     });
-
         return fetch(`${BASE_URL}?key=${API_KEY}&image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12`)
-            .then(response => {
+            .then(response => response.json())
+            .then(images => {
                 this.incrementPage();
-                return response.json();
+                return images;
             });
     },
 

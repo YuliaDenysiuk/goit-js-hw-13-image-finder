@@ -17,14 +17,16 @@
     <link rel="stylesheet" href="./css/styles.css">
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input type="text" name="query" autocomplete="off" placeholder="Search images..." />
-    </form>
+   <div class="container">
+      <form class="search-form" id="search-form">
+        <input type="text" name="query" autocomplete="off" placeholder="Search images..." />
+      </form>
 
-    <ul class="gallery"></ul>
+      <ul class="gallery"></ul>
 
-    <button type="button" class="button" data-action="load-more">Load more</button>
-    
+      <button type="button" class="button is-hidden" data-action="load-more">Load more</button>
+   </div>
+   
     <script src="./index.js" type="module"></script>
   </body>
 </html>
