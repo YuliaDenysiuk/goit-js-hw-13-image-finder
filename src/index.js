@@ -15,17 +15,18 @@ function onSearchImage(e) {
   e.preventDefault();
 
   apiService.searchQuery = e.currentTarget.elements.query.value;
- 
-  if (apiService.searchQuery === '') {
-    catchError();
+
+  if (apiService.searchQuery === '') { 
+    catchErrorOnAllResults();
     return;
-  }
+  };
 
   clearImagesContainer();
   apiService.resetPage();
   apiService.fetchImage()
-    .then(({ hits }) => {
-      createImageMarkup({ hits });
+    .then(({ hits, total }) => {         
+      createImageMarkup({ hits });   
+      catchErrorOnNoOneResults({ total });                        
       imageGalleryRef.addEventListener('click', onModalOpen);
     })
     .catch(err => console.log(err));
@@ -55,20 +56,31 @@ function onModalOpen(e) {
   modal.show();
 }
 
-function catchError() {  
+function catchErrorOnAllResults() {
+  loadMoreBtnRef.classList.add('is-hidden'); 
+  imageGalleryRef.innerHTML = "";     
   error({
-    text: 'Please enter a more specific query!',
-  })  
-  imageGalleryRef.innerHTML = "";
-  loadMoreBtnRef.classList.add('is-hidden');
+  text: 'Please enter a more specific query!',
+  });
+}
+
+function catchErrorOnNoOneResults({ total }) {     
+  if (total === 0) {    
+    loadMoreBtnRef.classList.add('is-hidden');
+    error({
+    text: 'No matches found. Please enter a more specific query!',
+    });
+    return;
+  };
 }
 
 function clearImagesContainer() {
-  imageGalleryRef.innerHTML = '';
+  imageGalleryRef.innerHTML = '';  
+  loadMoreBtnRef.classList.add('is-hidden');
 }
 
-function createImageMarkup({ hits }) {
-  imageGalleryRef.insertAdjacentHTML('beforeend', imageCardTemplate(hits));
+function createImageMarkup({ hits }) {  
+  imageGalleryRef.insertAdjacentHTML('beforeend', imageCardTemplate(hits));  
   loadMoreBtnRef.classList.remove('is-hidden');
 }
 
